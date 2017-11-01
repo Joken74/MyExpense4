@@ -17,12 +17,12 @@ public class ExpenseDetailActivity extends AppCompatActivity {
 
         long id = getIntent().getLongExtra(EXPENSE_ID_KEY,0);
 
-        Expense expense = MyExpenseOpenHandler.getInstance(this).readExpense(id);
+        //Expense expense = MyExpenseOpenHandler.getInstance(this).readExpense(id);
 
         // serialisiertes element wird hier wieder entpackt
         //Expense expense = (Expense) getIntent().getSerializableExtra(EXPENSE_ID_KEY);
 
-        Log.e("expense id", String.valueOf(expense.getId()));
-        Log.e("expense amount", expense.getAmount());
+        //Log.e("expense id", String.valueOf(expense.getId()));
+        //Log.e("expense amount", expense.getAmount());
     }
 }
