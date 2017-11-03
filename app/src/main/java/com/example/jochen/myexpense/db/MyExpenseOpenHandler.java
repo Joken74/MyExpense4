@@ -92,8 +92,10 @@ public class MyExpenseOpenHandler extends SQLiteOpenHelper {
 
             if (!cursor.isNull(cursor.getColumnIndex(DATE_COLUMN))) {
                 calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(cursor.getInt(cursor.getColumnIndex(DATE_COLUMN)) * 1000);
+                calendar.setTimeInMillis(cursor.getLong(cursor.getColumnIndex(DATE_COLUMN)) * 1000);
             }
+
+            expense.setDate(calendar);
 
         }
         database.close();

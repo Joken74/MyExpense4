@@ -62,9 +62,14 @@ public class ExpenseOverviewAdapter extends ArrayAdapter<Expense> {
 
         amount.setText(String.valueOf(currentExpense.getAmount()));
         category.setText(String.valueOf(currentExpense.getCategory()));
+        //int i = currentExpense.getDate().get(Calendar.YEAR);
+        //dueDate.setText(String.valueOf(currentExpense.getDate().get(Calendar.YEAR)));
+        //dueDate.setText((i);
 
         if (currentExpense.getDate() == null) {
             dueDate.setVisibility(View.GONE);
+            /*dueDate.setVisibility(View.VISIBLE);
+            dueDate.setText("Nix");*/
         } else {
             dueDate.setVisibility(View.VISIBLE);
             dueDate.setText(String.valueOf(currentExpense.getDate().get(Calendar.YEAR)));

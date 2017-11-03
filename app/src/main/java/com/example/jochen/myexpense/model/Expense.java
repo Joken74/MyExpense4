@@ -34,7 +34,7 @@ public class Expense implements Serializable {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(final String amount) {
         this.amount = amount;
     }
 
@@ -42,7 +42,7 @@ public class Expense implements Serializable {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(final String category) {
         this.category = category;
     }
 
@@ -50,7 +50,7 @@ public class Expense implements Serializable {
         return date;
     }
 
-    public void setDate(Calendar date) {
+    public void setDate(final Calendar date) {
         this.date = date;
     }
 
