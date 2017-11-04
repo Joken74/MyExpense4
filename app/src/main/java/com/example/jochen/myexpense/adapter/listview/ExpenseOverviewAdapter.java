@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jochen.myexpense.R;
@@ -59,6 +60,7 @@ public class ExpenseOverviewAdapter extends ArrayAdapter<Expense> {
         TextView amount = (TextView) view.findViewById(R.id.amount);
         TextView category = (TextView) view.findViewById(R.id.category);
         TextView dueDate = (TextView) view.findViewById(R.id.date);
+        ImageView important = (ImageView) view.findViewById(R.id.important_icon);
 
         amount.setText(String.valueOf(currentExpense.getAmount()));
         category.setText(String.valueOf(currentExpense.getCategory()));
@@ -68,11 +70,16 @@ public class ExpenseOverviewAdapter extends ArrayAdapter<Expense> {
 
         if (currentExpense.getDate() == null) {
             dueDate.setVisibility(View.GONE);
-            /*dueDate.setVisibility(View.VISIBLE);
-            dueDate.setText("Nix");*/
         } else {
             dueDate.setVisibility(View.VISIBLE);
             dueDate.setText(String.valueOf(currentExpense.getDate().get(Calendar.YEAR)));
+        }
+
+        if (currentExpense.isImportant()) {
+            important.setVisibility(View.VISIBLE);
+            important.setImageResource(R.mipmap.ic_ausrufezeichen);
+        } else {
+            important.setVisibility(View.INVISIBLE);
         }
 
         return view;

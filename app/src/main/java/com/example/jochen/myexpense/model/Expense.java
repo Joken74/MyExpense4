@@ -16,18 +16,20 @@ public class Expense implements Serializable {
     private String amount;
     private String category;
     private Calendar date;
+    private boolean important;
 
     // Zwei Konstruktoren, Date ist optional
     // Im reduzierten Konstruktor wird der andere mit NULL aufgerufen um nichts zu vergessen
 
     public Expense(final String amount, final String category) {
-        this(amount, category, null);
+        this(amount, category, null, false);
     }
 
-    public Expense(final String amount, final String category, final Calendar date) {
+    public Expense(final String amount, final String category, final Calendar date, final boolean important) {
         this.amount = amount;
         this.category = category;
         this.date = date;
+        this.important = important;
     }
 
     public String getAmount() {
@@ -60,5 +62,13 @@ public class Expense implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public boolean isImportant() {
+        return important;
+    }
+
+    public void setImportant(boolean important) {
+        this.important = important;
     }
 }

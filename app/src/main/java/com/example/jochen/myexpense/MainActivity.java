@@ -95,11 +95,11 @@ public class MainActivity extends Activity {
             create.setOnClickListener(new View.OnClickListener() {
                 public void onClick(final View view) {
                     MyExpenseOpenHandler database = MyExpenseOpenHandler.getInstance(MainActivity.this);
-                    database.createExpense(new Expense("123", "Auto"));
-                    database.createExpense(new Expense("234", "Essen", Calendar.getInstance()));
+                    /*database.createExpense(new Expense("123", "Auto"));
+                    database.createExpense(new Expense("234", "Essen", Calendar.getInstance(), false));*/
 
                     // Neue Daten für Sortierfunktion
-                    Expense expense1 = new Expense("111", "Essen");
+                    /*Expense expense1 = new Expense("111", "Essen");
                     Calendar c1 = Calendar.getInstance();
                     c1.set(2017, 11, 03);
                     expense1.setDate(c1);
@@ -109,10 +109,22 @@ public class MainActivity extends Activity {
                     Calendar c2 = Calendar.getInstance();
                     c2.set(2015, 11, 02);
                     expense2.setDate(c2);
+                    database.createExpense(expense2);*/
+
+                    Expense expense1 = new Expense("111", "Essen");
+                    expense1.setImportant(true);
+                    Calendar c1 = Calendar.getInstance();
+                    c1.set(2017, 11, 03);
+                    expense1.setDate(c1);
+                    database.createExpense(expense1);
+
+                    Expense expense2 = new Expense("222", "Auto");
+                    Calendar c2 = Calendar.getInstance();
+                    c2.set(2015, 11, 02);
+                    expense2.setDate(c2);
+                    expense2.setImportant(false);
                     database.createExpense(expense2);
 
-                    Expense expense3 = new Expense("333", "Wohnen");
-                    database.createExpense(expense3);
 
                     refreshListView();
                 }
