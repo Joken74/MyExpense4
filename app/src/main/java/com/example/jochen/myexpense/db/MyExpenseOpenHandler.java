@@ -21,6 +21,7 @@ public class MyExpenseOpenHandler extends SQLiteOpenHelper {
 
     public static MyExpenseOpenHandler INSTANCE = null;
 
+
     private static final String LOG_TAG = MyExpenseOpenHandler.class.getSimpleName();
 
     private static final String DB_NAME = "EXPENSES";
