@@ -8,10 +8,16 @@ import android.widget.TextView;
 
 import com.example.jochen.myexpense.db.MyExpenseOpenHandler;
 import com.example.jochen.myexpense.model.Expense;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Calendar;
 
-public class ExpenseDetailActivity extends AppCompatActivity {
+public class ExpenseDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
     public static final String EXPENSE_ID_KEY = "ID";
 
     private TextView amount;
@@ -31,6 +37,9 @@ public class ExpenseDetailActivity extends AppCompatActivity {
         description = (TextView) findViewById(R.id.description);
         important = (CheckBox) findViewById(R.id.important);
 
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
         Expense expense = MyExpenseOpenHandler.getInstance(this).readExpense(id);
 
         // serialisiertes element wird hier wieder entpackt
@@ -47,5 +56,13 @@ public class ExpenseDetailActivity extends AppCompatActivity {
 
     private String getDateInString (Calendar calendar) {
         return calendar.get(Calendar.DAY_OF_MONTH) + "." + calendar.get(Calendar.MONTH) + "." + calendar.get(Calendar.YEAR) + " " + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE);
+    }
+
+    @Override
+    public void onMapReady(final GoogleMap googleMap) {
+        LatLng position = new LatLng(51.505636,-0.075315);
+        googleMap.addMarker(new MarkerOptions().position(position));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position,15));
+
     }
 }

@@ -17,6 +17,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".ExpenseDetailActivity"></activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDhWbEqnhSn8YSukZMDfQttbOYvYc7xJko" />
     </application>
 
 </manifest>
