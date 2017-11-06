@@ -24,7 +24,7 @@ public class MyExpenseOpenHandler extends SQLiteOpenHelper {
     private static final String LOG_TAG = MyExpenseOpenHandler.class.getSimpleName();
 
     private static final String DB_NAME = "EXPENSES";
-    private static final int VERSION = 8;
+    private static final int VERSION = 9;
     private static final String TABLE_NAME = "expenses";
 
     public static final String ID_COLUMN = "ID";
@@ -32,6 +32,7 @@ public class MyExpenseOpenHandler extends SQLiteOpenHelper {
     public static final String CATEGORY_COLUMN = "category";
     public static final String DATE_COLUMN = "date";
     public static final String IMPORTANT_COLUMN = "important";
+    public static final String DESCRIPTION_COLUMN = "description";
 
     // Cursor factory wird nicht benötigt
 
@@ -49,7 +50,7 @@ public class MyExpenseOpenHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(final SQLiteDatabase db) {
-        String createQuery = "CREATE TABLE " + TABLE_NAME + " (" + ID_COLUMN + " INTEGER PRIMARY KEY, " + AMOUNT_COLUMN + " TEXT NOT NULL, " + CATEGORY_COLUMN + " TEXT, " + DATE_COLUMN + " INTEGER DEFAULT NULL, " + IMPORTANT_COLUMN + " INTEGER DEFAULT 0)";
+        String createQuery = "CREATE TABLE " + TABLE_NAME + " (" + ID_COLUMN + " INTEGER PRIMARY KEY, " + AMOUNT_COLUMN + " TEXT NOT NULL, " + CATEGORY_COLUMN + " TEXT, " + DATE_COLUMN + " INTEGER DEFAULT NULL, " + IMPORTANT_COLUMN + " INTEGER DEFAULT 0, " + DESCRIPTION_COLUMN + " TEXT)";
         db.execSQL(createQuery);
     }
 
@@ -69,6 +70,7 @@ public class MyExpenseOpenHandler extends SQLiteOpenHelper {
         values.put(CATEGORY_COLUMN, expense.getCategory());
         values.put(DATE_COLUMN, expense.getDate() == null ? null : expense.getDate().getTimeInMillis() / 1000);  // Inlay If da Date optional
         values.put(IMPORTANT_COLUMN, expense.isImportant() ? 1 : 0); // wenn das true ist, dann 1, sonst 0. Standard ist ja false = 0.
+        values.put(DESCRIPTION_COLUMN, expense.getDescription() == null ? null : expense.getDescription());
 
         long newID = database.insert(TABLE_NAME, null, values); // wawrum gibt das die ID zurück? Ohne SQL Abfrage...
 
@@ -80,7 +82,7 @@ public class MyExpenseOpenHandler extends SQLiteOpenHelper {
     public Expense readExpense(final long id) {
         SQLiteDatabase database = this.getReadableDatabase();
         // Tabellen-Name, dann welche Spalten, dann Selection = WHERE clause,
-        Cursor cursor = database.query(TABLE_NAME, new String[]{ID_COLUMN, AMOUNT_COLUMN, CATEGORY_COLUMN, DATE_COLUMN, IMPORTANT_COLUMN}, ID_COLUMN + " = ?", new String[]{String.valueOf(id)}, null, null, null);  // Cursor zeigt auf das Ergebnis einer DB Abfrage
+        Cursor cursor = database.query(TABLE_NAME, new String[]{ID_COLUMN, AMOUNT_COLUMN, CATEGORY_COLUMN, DATE_COLUMN, IMPORTANT_COLUMN, DESCRIPTION_COLUMN}, ID_COLUMN + " = ?", new String[]{String.valueOf(id)}, null, null, null);  // Cursor zeigt auf das Ergebnis einer DB Abfrage
         // SELECT id, amount, column, date WHERE id = ?
 
         Expense expense = null;
@@ -89,6 +91,7 @@ public class MyExpenseOpenHandler extends SQLiteOpenHelper {
             cursor.moveToFirst();
             expense = new Expense(cursor.getString(cursor.getColumnIndex(AMOUNT_COLUMN)), cursor.getString(cursor.getColumnIndex(CATEGORY_COLUMN)));
             expense.setId(cursor.getLong(cursor.getColumnIndex(ID_COLUMN)));
+            expense.setDescription(cursor.getString(cursor.getColumnIndex(DESCRIPTION_COLUMN)));
 
 
             Calendar calendar = null;
@@ -132,6 +135,7 @@ public class MyExpenseOpenHandler extends SQLiteOpenHelper {
         values.put(CATEGORY_COLUMN, expense.getCategory());
         values.put(DATE_COLUMN, expense.getDate() == null ? null : expense.getDate().getTimeInMillis() / 1000);
         values.put(IMPORTANT_COLUMN, expense.isImportant() ? 1 : 0);
+        values.put(DESCRIPTION_COLUMN, expense.getDescription());
 
         database.update(TABLE_NAME, values, ID_COLUMN + " = ?", new String[]{String.valueOf(expense.getId())});
 

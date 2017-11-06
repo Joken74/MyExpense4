@@ -116,6 +116,7 @@ public class MainActivity extends Activity {
                     Calendar c1 = Calendar.getInstance();
                     c1.set(2017, 11, 03);
                     expense1.setDate(c1);
+                    expense1.setDescription("sljflksdjfl");
                     database.createExpense(expense1);
 
                     Expense expense2 = new Expense("222", "Auto");
@@ -124,6 +125,9 @@ public class MainActivity extends Activity {
                     expense2.setDate(c2);
                     expense2.setImportant(false);
                     database.createExpense(expense2);
+
+                    Expense expense3 = new Expense("333", "Wohnen", null, false, "bitte");
+                    database.createExpense(expense3);
 
 
                     refreshListView();
