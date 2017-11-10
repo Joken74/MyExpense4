@@ -53,7 +53,7 @@
         android:background="?attr/editTextBackground"
         android:textColor="?attr/editTextColor"
         android:layout_toLeftOf="@+id/deleteDueDate"
-        android:layout_toStartOf="@+id/deleteDueDate"/>
+        android:layout_toStartOf="@+id/deleteDueDate" />
 
     <CheckBox
         android:layout_width="wrap_content"

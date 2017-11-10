@@ -1,17 +1,25 @@
 package com.example.jochen.myexpense;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.TextView;
 
+import com.example.jochen.myexpense.dialogs.DatePickerFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -20,12 +28,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class CreateNewExpenseActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
+public class CreateNewExpenseActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener, DatePickerDialog.OnDateSetListener {
 
     public Button currentPosition;
     public GoogleMap map;
     private Marker marker;
     private LocationManager locationManager;
+
+    private TextView dueDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +58,28 @@ public class CreateNewExpenseActivity extends AppCompatActivity implements OnMap
             });
         }
 
+        this.dueDate = (TextView) findViewById(R.id.dueDateText);
+        this.dueDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment datePicker = new DatePickerFragment();
+                datePicker.show(getSupportFragmentManager(), "datePicker");
+            }
+        });
 
+        // Standard Dialog:
+     /*   AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // der Kontext ist this, also die momentan aktive Activity in der wir uns befinden
+        builder.setTitle("Sehr Wichtig!!!");
+        builder.setMessage("Eine neue Ausgabe wird erstellt.");
+        builder.setNeutralButton("ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialogInterface, final int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show(); */
     }
 // Abfrage des ob der Nutzer mit der Positionsweitergabe einverstanden ist --> Manifest.xml permissions
     private void searchPosition() {
@@ -135,5 +166,10 @@ public class CreateNewExpenseActivity extends AppCompatActivity implements OnMap
 
         }
         // super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onDateSet(final DatePicker datePicker, final int i, final int i1, final int i2) {
+        this.dueDate.setText(String.format("%02d.%02d.%d", i2, i1+1, i));
     }
 }
