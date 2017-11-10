@@ -37,6 +37,7 @@ public class MainActivity extends Activity {
         Button clearFirst = (Button) findViewById(R.id.clearFirst);
         Button clearAll = (Button) findViewById(R.id.clearAll);
         Button sort = (Button) findViewById(R.id.sort);
+        Button neu = (Button) findViewById(R.id.neu);
 
         this.resultList = (ListView) findViewById(R.id.resultList) ;
 
@@ -63,6 +64,16 @@ public class MainActivity extends Activity {
                 Log.e("Click on List: ", element.toString());
             }
         });
+
+        if(neu != null) {
+            neu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MainActivity.this, CreateNewExpenseActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
 
         if(updateFirst != null) {
             updateFirst.setOnClickListener(new View.OnClickListener() {

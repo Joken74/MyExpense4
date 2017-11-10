@@ -60,7 +60,13 @@
         android:id="@+id/sort"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="Sort" />
+
+    <Button
+        android:id="@+id/neu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New" />
 
 
 </LinearLayout>
