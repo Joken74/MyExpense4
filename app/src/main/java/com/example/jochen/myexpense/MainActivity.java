@@ -137,7 +137,7 @@ public class MainActivity extends Activity {
                     expense2.setImportant(false);
                     database.createExpense(expense2);
 
-                    Expense expense3 = new Expense("333", "Wohnen", null, false, "bitte");
+                    Expense expense3 = new Expense("333", "Wohnen", null, false, "bitte", null);
                     database.createExpense(expense3);
 
 
@@ -190,6 +190,11 @@ public class MainActivity extends Activity {
                 }
             });
         }
+    }
+
+    protected void onResume(){
+        super.onResume();
+        refreshListView();
     }
 
     private void refreshListView() {

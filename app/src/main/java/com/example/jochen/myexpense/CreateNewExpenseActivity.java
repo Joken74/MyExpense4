@@ -2,7 +2,6 @@ package com.example.jochen.myexpense;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -10,16 +9,24 @@ import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.jochen.myexpense.db.MyExpenseOpenHandler;
 import com.example.jochen.myexpense.dialogs.DatePickerFragment;
+import com.example.jochen.myexpense.model.Expense;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -28,6 +35,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Calendar;
+import java.util.Locale;
+
 public class CreateNewExpenseActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener, DatePickerDialog.OnDateSetListener {
 
     public Button currentPosition;
@@ -35,7 +45,17 @@ public class CreateNewExpenseActivity extends AppCompatActivity implements OnMap
     private Marker marker;
     private LocationManager locationManager;
 
+    private Expense expense;
+
     private TextView dueDate;
+    private EditText category;
+    private EditText amount;
+    private EditText description;
+    private CheckBox important;
+    private Button save;
+    private ImageButton removeDate;
+    private ImageButton removePosition;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +64,20 @@ public class CreateNewExpenseActivity extends AppCompatActivity implements OnMap
 
         this.currentPosition = (Button) findViewById(R.id.currentPosition);
 
+        this.expense = new Expense();
+
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        this.category = (EditText) findViewById(R.id.category);
+        this.amount = (EditText) findViewById(R.id.amount);
+        this.description = (EditText) findViewById(R.id.description);
+        this.important = (CheckBox) findViewById(R.id.important);
+
+        this.save = (Button) findViewById(R.id.save);
+        this.removeDate = (ImageButton) findViewById(R.id.deleteDueDate);
+        this.removePosition = (ImageButton) findViewById(R.id.deletePosition);
+
 
         this.locationManager = (LocationManager) getSystemService(LOCATION_SERVICE); // einfach abfragen
 
@@ -80,6 +112,92 @@ public class CreateNewExpenseActivity extends AppCompatActivity implements OnMap
         });
         AlertDialog dialog = builder.create();
         dialog.show(); */
+
+     // Standard Text-Watcher:
+        this.category.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(final Editable editable) {
+                expense.setCategory(editable.toString().length() == 0 ? null : editable.toString());
+            }
+        });
+
+        this.amount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(final Editable editable) {
+                expense.setAmount(editable.toString().length() == 0 ? null : editable.toString());
+            }
+        });
+
+        this.description.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(final Editable editable) {
+                expense.setDescription(editable.toString().length() == 0 ? null : editable.toString());
+            }
+        });
+
+        this.important.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(final CompoundButton compoundButton, final boolean b) {
+                expense.setImportant(b);
+            }
+        });
+
+        this.save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                if(expense.getCategory() == null || expense.getAmount() == null) { // Amount and Category must be set
+                    Toast.makeText(CreateNewExpenseActivity.this, "Fehler beim speichern. Kategorie und Betrag müssen sein!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                MyExpenseOpenHandler.getInstance(CreateNewExpenseActivity.this).createExpense(expense);
+                finish(); // Activity will be closed when saving was successful.
+            }
+        });
+
+        this.removePosition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                removeLocation();
+            }
+        });
+
+        this.removeDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                removeDate();
+            }
+        });
     }
 // Abfrage des ob der Nutzer mit der Positionsweitergabe einverstanden ist --> Manifest.xml permissions
     private void searchPosition() {
@@ -106,6 +224,8 @@ public class CreateNewExpenseActivity extends AppCompatActivity implements OnMap
     @Override
     public void onLocationChanged(Location location) {
         LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
+
+        expense.setLocation(position);
 
         if (this.map != null) {
 
@@ -170,6 +290,23 @@ public class CreateNewExpenseActivity extends AppCompatActivity implements OnMap
 
     @Override
     public void onDateSet(final DatePicker datePicker, final int i, final int i1, final int i2) {
-        this.dueDate.setText(String.format("%02d.%02d.%d", i2, i1+1, i));
+        this.dueDate.setText(String.format(Locale.GERMANY, "%02d.%02d.%d", i2, i1+1, i));
+
+        Calendar c = Calendar.getInstance();
+        c.set(i, i1+1, i2);
+
+        expense.setDate(c);
+    }
+
+    private void removeLocation() {
+        if(this.marker != null) {
+            this.marker.remove();
+        }
+        expense.setLocation(null);
+    }
+
+    private void removeDate() {
+        this.dueDate.setText("");
+        this.expense.setDate(null);
     }
 }

@@ -1,5 +1,7 @@
 package com.example.jochen.myexpense.model;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -18,20 +20,26 @@ public class Expense implements Serializable {
     private Calendar date;
     private boolean important;
     private String description;
+    private LatLng location;
 
     // Zwei Konstruktoren, Date ist optional
     // Im reduzierten Konstruktor wird der andere mit NULL aufgerufen um nichts zu vergessen
 
-    public Expense(final String amount, final String category) {
-        this(amount, category, null, false, null);
+    public Expense(){
+        this(null, null, null, false, null, null);
     }
 
-    public Expense(final String amount, final String category, final Calendar date, final boolean important, final String description) {
+    public Expense(final String amount, final String category) {
+        this(amount, category, null, false, null, null);
+    }
+
+    public Expense(final String amount, final String category, final Calendar date, final boolean important, final String description, final LatLng location) {
         this.amount = amount;
         this.category = category;
         this.date = date;
         this.important = important;
         this.description = description;
+        this.location = location;
     }
 
     public String getAmount() {
@@ -80,5 +88,13 @@ public class Expense implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public LatLng getLocation() {
+        return location;
+    }
+
+    public void setLocation(LatLng location) {
+        this.location = location;
     }
 }
