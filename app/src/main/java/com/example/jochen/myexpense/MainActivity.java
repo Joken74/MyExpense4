@@ -3,6 +3,9 @@ package com.example.jochen.myexpense;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -10,16 +13,19 @@ import android.widget.ListView;
 
 import com.example.jochen.myexpense.adapter.listview.ExpenseOverviewAdapter;
 import com.example.jochen.myexpense.db.MyExpenseOpenHandler;
+import com.example.jochen.myexpense.dialogs.NumberPickerDialogFragment;
+import com.example.jochen.myexpense.dialogs.listener.OnNumberPickedListener;
 import com.example.jochen.myexpense.model.Expense;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity implements OnNumberPickedListener {
 
     // private static final String LOG_TAG = MyExpenseOpenHandler.class.getSimpleName();
 
@@ -38,6 +44,7 @@ public class MainActivity extends Activity {
         Button clearAll = (Button) findViewById(R.id.clearAll);
         Button sort = (Button) findViewById(R.id.sort);
         Button neu = (Button) findViewById(R.id.neu);
+        Button numberPicker = (Button) findViewById(R.id.numberPicker);
 
         this.resultList = (ListView) findViewById(R.id.resultList) ;
 
@@ -190,6 +197,17 @@ public class MainActivity extends Activity {
                 }
             });
         }
+
+        if(numberPicker != null) {
+            numberPicker.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    NumberPickerDialogFragment picker = NumberPickerDialogFragment.newInstance(100,0);
+                    picker.setListener(MainActivity.this);
+                    picker.show(getSupportFragmentManager(),"picker");
+                }
+            });
+        }
     }
 
     protected void onResume(){
@@ -201,5 +219,13 @@ public class MainActivity extends Activity {
         dataSource.clear();
         dataSource.addAll(MyExpenseOpenHandler.getInstance(this).readAllExpenses());
         adapter.notifyDataSetChanged();
+    }
+
+    public void onNumberPicked (final boolean numberPicked, final int number, final DialogFragment dialogFragment) {
+        if(numberPicked){
+            Toast.makeText(this, "neue nummer: " + number, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "abbruch", Toast.LENGTH_SHORT).show();
+        }
     }
 }
