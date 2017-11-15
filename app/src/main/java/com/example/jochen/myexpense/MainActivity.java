@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -227,5 +230,38 @@ public class MainActivity extends AppCompatActivity implements OnNumberPickedLis
         } else {
             Toast.makeText(this, "abbruch", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    // Actionbar Menü anzeigen --> 2 Methoden überschreiben
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_activity_overview, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_new_expense:
+                this.newExpense();
+                return true;
+            case R.id.clearAll:
+                this.clearAll();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    // Auslagern um über mehrere Buttons darauf zu zugreifen
+    public void clearAll() {
+        MyExpenseOpenHandler database = MyExpenseOpenHandler.getInstance(MainActivity.this);
+        database.deleteAllExpenses();
+        refreshListView();
+    }
+
+    public void newExpense() {
+        Intent intent = new Intent(MainActivity.this, CreateNewExpenseActivity.class);
+        startActivity(intent);
     }
 }
