@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,7 +22,10 @@ import com.example.jochen.myexpense.dialogs.listener.OnNumberPickedListener;
 import com.example.jochen.myexpense.model.Expense;
 
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.Calendar;
 import java.util.Comparator;
@@ -40,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements OnNumberPickedLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         Button create = (Button) findViewById(R.id.create);
         Button updateFirst = (Button) findViewById(R.id.updateFirst);
@@ -240,6 +247,7 @@ public class MainActivity extends AppCompatActivity implements OnNumberPickedLis
         return true;
     }
 
+    // Video 17 macht aus der Actionbar (s.u.) eine Toolbar --> erster Schritt: Entfernen darkActionBar aus Style to NoActionBar
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {

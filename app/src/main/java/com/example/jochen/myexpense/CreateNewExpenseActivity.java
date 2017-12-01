@@ -15,12 +15,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +58,8 @@ public class CreateNewExpenseActivity extends AppCompatActivity implements OnMap
     private ImageButton removeDate;
     private ImageButton removePosition;
 
+    private Spinner spinner;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +81,11 @@ public class CreateNewExpenseActivity extends AppCompatActivity implements OnMap
         this.save = (Button) findViewById(R.id.save);
         this.removeDate = (ImageButton) findViewById(R.id.deleteDueDate);
         this.removePosition = (ImageButton) findViewById(R.id.deletePosition);
+
+        this.spinner = (Spinner) findViewById(R.id.spinner);
+        String[] items = new String[]{"1", "2", "three"};
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        spinner.setAdapter(adapter1);
 
 
         this.locationManager = (LocationManager) getSystemService(LOCATION_SERVICE); // einfach abfragen

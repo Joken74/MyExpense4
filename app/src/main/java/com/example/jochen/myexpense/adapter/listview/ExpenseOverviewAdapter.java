@@ -51,7 +51,7 @@ public class ExpenseOverviewAdapter extends ArrayAdapter<Expense> {
             view = LayoutInflater.from(getContext()).inflate(R.layout.expense_overview_listitem, parent, false);
         }
         TextView amount = (TextView) view.findViewById(R.id.amount);
-        TextView category = (TextView) view.findViewById(R.id.amount);
+        TextView category = (TextView) view.findViewById(R.id.category);
         TextView dueDate = (TextView) view.findViewById(R.id.date);
         ImageView important = (ImageView) view.findViewById(R.id.important_icon);
 
@@ -65,7 +65,7 @@ public class ExpenseOverviewAdapter extends ArrayAdapter<Expense> {
             dueDate.setVisibility(View.GONE);
         } else {
             dueDate.setVisibility(View.VISIBLE);
-            dueDate.setText(String.valueOf(currentExpense.getDate().get(Calendar.YEAR)));
+            dueDate.setText(String.valueOf(currentExpense.getDate().get(Calendar.YEAR))+"-"+String.valueOf(currentExpense.getDate().get(Calendar.MONTH))+"-"+String.valueOf(currentExpense.getDate().get(Calendar.DAY_OF_MONTH)));
         }
 
         if (currentExpense.isImportant()) {

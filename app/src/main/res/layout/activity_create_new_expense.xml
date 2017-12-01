@@ -39,7 +39,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginStart="20dp"
         android:layout_toRightOf="@+id/category"
-        android:inputType="text" />
+        android:inputType="numberDecimal" />
 
     <EditText
         android:id="@+id/category"
@@ -156,5 +156,38 @@
         android:layout_below="@+id/description"
         android:layout_toLeftOf="@+id/deletePosition"
         android:layout_toStartOf="@+id/deletePosition"/>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/radioGroup"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/important"
+        android:layout_toRightOf="@+id/important"
+        android:id="@+id/radioGroup"
+        android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RadioButton" />
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/dueDateText"
+                android:layout_alignRight="@+id/dueDateText"
+                android:layout_alignTop="@+id/radioGroup"
+                android:text="RadioButton" />
+
+    </RadioGroup>
 
 </RelativeLayout>

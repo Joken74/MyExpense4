@@ -22,11 +22,10 @@ public class MyExpenseOpenHandler extends SQLiteOpenHelper {
 
     public static MyExpenseOpenHandler INSTANCE = null;
 
-
     private static final String LOG_TAG = MyExpenseOpenHandler.class.getSimpleName();
 
     private static final String DB_NAME = "EXPENSES";
-    private static final int VERSION = 10;
+    private static final int VERSION = 12;
     private static final String TABLE_NAME = "expenses";
 
     public static final String ID_COLUMN = "ID";
@@ -184,6 +183,4 @@ public class MyExpenseOpenHandler extends SQLiteOpenHelper {
             return null;
         }
     }
-
-
 }

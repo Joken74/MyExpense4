@@ -8,6 +8,14 @@
     android:padding="10dp"
     android:weightSum="1">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="261dp"
@@ -58,19 +66,27 @@
 
     <Button
         android:id="@+id/sort"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sort" />
 
+    <TextView
+        android:id="@+id/calculation"
+        android:layout_width="184dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
+
     <Button
         android:id="@+id/neu"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New" />
 
     <Button
         android:id="@+id/numberPicker"
-        android:layout_width="match_parent"
+        android:layout_width="186dp"
         android:layout_height="wrap_content"
         android:text="Pick#" />
 
